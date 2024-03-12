@@ -45,7 +45,7 @@ class Front_app:
 
 
 
-f= Front_app()
+
 
 
 
