@@ -15,20 +15,24 @@ def psBannerResizer(catDir,data, width_):
     banner_check = list(os.listdir(f"{catDir}"))
     if width_ == 650:
         args = [650, 490]
+        banner_format = '_mb'
     else:
         args = [610, 242]
+        banner_format = 'b'
     for banner_name in banner_check:
         print(banner_name)
-
+        if banner_name.endswith('.jpg') or banner_name.endswith('.png') or banner_name.endswith('.mp4'):
         # Load the image file into Photoshop and assign it to the 'a' variable
-        banner_file = app.load(f"{catDir}\\{banner_name}")
-        print('załadowano kraj')
-        # Resize and save the image
-        banner_file.resizeImage(width=args[0], height=args[1], resolution=72, automatic=8)
-        png = f"{catDir}\\{ends_with_del(banner_name).lower()}{data}b"
-        options = ps.PNGSaveOptions()
-        banner_file.saveAs(png, options, asCopy=True)
-        banner_file.close()
+            banner_file = app.load(f"{catDir}\\{banner_name}")
+            print('załadowano kraj')
+            # Resize and save the image
+            banner_file.resizeImage(width=args[0], height=args[1], resolution=72, automatic=8)
+            png = f"{catDir}\\Banner\\{ends_with_del(banner_name).lower()}{data}{banner_format}"
+            options = ps.PNGSaveOptions()
+            banner_file.saveAs(png, options, asCopy=True)
+            banner_file.close()
+        else:
+            continue
 
 
 
