@@ -2,6 +2,7 @@ import tkinter as tk
 import customtkinter
 from tkinter import filedialog as fd
 import APS_API as aps
+import os
 
 
 class Front_app:
@@ -19,9 +20,9 @@ class Front_app:
         self.R1.grid(row=2, column=0)
         self.R2 = tk.Radiobutton(self.window, text="650x490", variable=self.var, value=650)
         self.R2.grid(row=2, column=1)
-        self.button_1 = tk.Button(text='Make a Banner', width=20, bg="green", fg="yellow", command=self.get_banner_dir)
+        self.button_1 = tk.Button(text='Select folder', width=20, bg="green", fg="yellow", command=self.get_banner_dir)
         self.button_1.grid(row=3, column=0)
-        self.button_2 = tk.Button(text='Make a Banner', width=20, bg="green", fg="yellow", command=self.resize_banner)
+        self.button_2 = tk.Button(text='Resize a Banner', width=20, bg="green", fg="yellow", command=self.resize_banner)
         self.button_2.grid(row=3, column=1)
         self.window.mainloop()
         self.ban_dir = None
@@ -30,6 +31,7 @@ class Front_app:
     def update_cam_data(self, *args):
         # Get the selected value from the variable
         self.baner_size_data = self.var.get()
+
     def get_banner_dir(self):
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         #self.button_2.config(state='normal')   Enable button_2 after directory selection
@@ -38,7 +40,10 @@ class Front_app:
         if self.ban_dir is not None and self.baner_size_data is not None:  # Check if a directory is selected
             # Use the retrieved ban_dir from button_1
             dimensions = self.baner_size_data
-            aps.psBannerResizer(self.ban_dir, '2', int(dimensions) )
+            if os.path.exists(f"{self.ban_dir}\\Banner") == False:
+                os.makedirs(f"{self.ban_dir}\\Banner")
+
+            aps.psBannerResizer(self.ban_dir, self.dateforCatalog_.get(), int(dimensions))
 
 
 
