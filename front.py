@@ -7,6 +7,15 @@ import os
 #import serverConnection as sC
 #import pngTowebp as ptw
 
+
+class MenuFrame(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        # add widgets onto the frame...
+        self.label = ctk.CTkLabel(self)
+        self.label.grid(row=0, column=0, padx=20)
+
+
 class App(ctk.CTk):
     def __init__(self):
         #main setup
@@ -16,14 +25,13 @@ class App(ctk.CTk):
         self.resizable(False, False)
 
         # widgets
+        self.my_frame = MenuFrame(master=self)
+        self.my_frame.configure(fg_color='red')
+        self.my_frame.place(x=60, y=240, anchor='center')
         self.create_widgets()
         self.create_layout()
         # run
         self.mainloop()
-
-
-
-
 
 
     def create_widgets(self):
@@ -82,6 +90,13 @@ class App(ctk.CTk):
             # sC.connectToServer(f"{self.ban_dir}\\Banner")
     def quite_app(self):
         self.quit()
+
+
+
+
+
+    
+    
 App()
 
 
