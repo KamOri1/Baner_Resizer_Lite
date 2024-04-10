@@ -68,8 +68,8 @@ class App(ctk.CTk):
 
     def aa(self):
         self.my_serv = ServerLogView(master=self)
-        self.my_serv.configure(width=350)
-        self.my_serv.place(x=280, y=180, anchor='center')
+        self.my_serv.configure(width=350, height=200)
+        self.my_serv.place(x=320, y=140, anchor='center')
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 16))
