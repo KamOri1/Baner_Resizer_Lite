@@ -27,22 +27,35 @@ class ServerLogView(ctk.CTkFrame):
         self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 16))
         self.label2 = ctk.CTkLabel(master=self, text='User Name: ', font=('Open Sans', 16))
         self.label3 = ctk.CTkLabel(master=self, text='Password: ', font=('Open Sans', 16))
+        self.label4 = ctk.CTkLabel(master=self, text='Path: ', font=('Open Sans', 16))
         self.serverDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                          width=200, height=10)
         self.userNameDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                            width=200, height=10)
         self.passwordDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                            width=200, height=10)
+        self.pathDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
+                                           width=200, height=10)
 
         self.label1.place(x=60, y=40, anchor='center')
         self.label2.place(x=60, y=80, anchor='center')
         self.label3.place(x=60, y=120, anchor='center')
+        self.label4.place(x=60, y=160, anchor='center')
         self.serverDate.place(x=220, y=40, anchor='center')
         self.userNameDate.place(x=220, y=80, anchor='center')
         self.passwordDate.place(x=220, y=120, anchor='center')
-        self.button_1 = ctk.CTkButton(self, text='zamknij', width=100, fg_color="blue", hover_color='#34661e',
+        self.pathDate.place(x=220, y=160, anchor='center')
+
+
+
+
+
+        self.button_1 = ctk.CTkButton(self, text='Connect', width=100, fg_color="#0033FF", hover_color='#0000FF',
+                                      font=('Open Sans', 14))
+        self.button_1.place(x=269, y=210, anchor='center')
+        self.button_2 = ctk.CTkButton(self, text='Close', width=100, fg_color="red", hover_color='#d11507',
                                       font=('Open Sans', 14), command=self.zamknij_frame)
-        self.button_1.place(x=260, y=160, anchor='center')
+        self.button_2.place(x=269, y=250, anchor='center')
 
     def zamknij_frame(self):
         self.place_forget()
@@ -57,19 +70,19 @@ class App(ctk.CTk):
         self.resizable(False, False)
 
         # widgets
-        self.my_frame = MenuFrame(self.aa, master=self)
-        self.my_frame.configure(width=100)
-        self.my_frame.place(x=60, y=240, anchor='center')
+        # self.my_frame = MenuFrame(self.serverFrame, master=self)
+        # self.my_frame.configure(width=100)
+        # self.my_frame.place(x=60, y=240, anchor='center')
 
         self.create_widgets()
         self.create_layout()
         # run
         self.mainloop()
 
-    def aa(self):
+    def serverFrame(self):
         self.my_serv = ServerLogView(master=self)
-        self.my_serv.configure(width=350, height=200)
-        self.my_serv.place(x=320, y=140, anchor='center')
+        self.my_serv.configure(width=450, height=280)
+        self.my_serv.place(x=360, y=150, anchor='center')
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 16))
@@ -86,20 +99,24 @@ class App(ctk.CTk):
                                       font=('Open Sans', 14), command=self.get_banner_dir)
         self.button_2 = ctk.CTkButton(master=self, text='Resize', width=100, fg_color="green", hover_color='#34661e',
                                       font=('Open Sans', 14), command=self.resize_banner)
-        self.button_3 = ctk.CTkButton(master=self, text='Exit', width=100, fg_color="red", hover_color='#d11507',
+        self.button_3 = ctk.CTkButton(self, text='Connection', width=100, fg_color="#0033FF", hover_color='#0000FF',
+                                      font=('Open Sans', 14), command=self.serverFrame)
+
+        self.button_4 = ctk.CTkButton(master=self, text='Exit', width=100, fg_color="red", hover_color='#d11507',
                                       font=('Open Sans', 14), command=self.quite_app)
 
         self.ban_dir = None
         self.baner_size_data = None
 
     def create_layout(self):
-        self.label1.place(x=120, y=40, anchor='center')
-        self.dateforCatalog_.place(x=350, y=40, anchor='center')
-        self.R1.place(x=68, y=80, anchor='center')
-        self.R2.place(x=160, y=80, anchor='center')
+        self.label1.place(x=255, y=40, anchor='center')
+        self.dateforCatalog_.place(x=470, y=40, anchor='center')
+        self.R1.place(x=197, y=80, anchor='center')
+        self.R2.place(x=297, y=80, anchor='center')
         self.button_1.place(x=60, y=120, anchor='center')
         self.button_2.place(x=60, y=160, anchor='center')
         self.button_3.place(x=60, y=200, anchor='center')
+        self.button_4.place(x=60, y=240, anchor='center')
 
     def update_cam_data(self, *args):
         # Get the selected value from the variable
