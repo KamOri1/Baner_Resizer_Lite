@@ -2,7 +2,7 @@ import paramiko
 import os
 from ftplib import FTP
 
-
+# self.dateforCatalog_.get('0.0', 'end')
 def connectToServerSFTP(catDir, hostname_, username_, password_, ftpCatDir):
     cnopts = paramiko.client.SSHClient()
     cnopts.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
@@ -14,17 +14,18 @@ def connectToServerSFTP(catDir, hostname_, username_, password_, ftpCatDir):
         print(f"connected to server: {sftp.getcwd()}")
 
         sftp.chdir(ftpCatDir)
-        current_directory = sftp.getcwd()
-        if current_directory == ftpCatDir:
-            print(f"You are in the {ftpCatDir} directory.")
-            checkToSend = list(os.listdir(catDir))
-            for ban in checkToSend:
-                sftp.put(f"{catDir}\\{ban}", f"{ftpCatDir}//{ban}")
-                print(f'Baner {ban} został przesłany na server')
-            print(
-                "Wszystkie banery zostały przesłane na server #######################################################")
-        else:
-            print(f"{sftp.getcwd()}") # dodać connection error zamiast tego
+        print(f"connected to server 2: {sftp.getcwd()}")
+        # current_directory = sftp.getcwd()
+        # if current_directory == ftpCatDir:
+        #     print(f"You are in the {ftpCatDir} directory.")
+        #     checkToSend = list(os.listdir(catDir))
+        #     for ban in checkToSend:
+        #         sftp.put(f"{catDir}\\{ban}", f"{ftpCatDir}//{ban}")
+        #         print(f'Baner {ban} został przesłany na server')
+        #     print(
+        #         "Wszystkie banery zostały przesłane na server #######################################################")
+        # else:
+        #     print(f"{sftp.getcwd()}") # dodać connection error zamiast tego
         cnopts.close()
 
 

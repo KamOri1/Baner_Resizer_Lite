@@ -1,3 +1,3 @@
-from front import Front_app
+from front import App
 
-fr = Front_app()
+App()

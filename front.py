@@ -6,7 +6,7 @@ import APS_API as aps
 import os
 
 
-# import serverConnection as sC
+import serverConnection as sC
 # import pngTowebp as ptw
 
 
@@ -46,12 +46,12 @@ class ServerLogView(ctk.CTkFrame):
         self.passwordDate.place(x=220, y=120, anchor='center')
         self.pathDate.place(x=220, y=160, anchor='center')
 
-
+        # self.dateforCatalog_.get('0.0', 'end')
 
 
 
         self.button_1 = ctk.CTkButton(self, text='Connect', width=100, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 14))
+                                      font=('Open Sans', 14), command=self.commander)
         self.button_1.place(x=269, y=210, anchor='center')
         self.button_2 = ctk.CTkButton(self, text='Close', width=100, fg_color="red", hover_color='#d11507',
                                       font=('Open Sans', 14), command=self.zamknij_frame)
@@ -60,6 +60,25 @@ class ServerLogView(ctk.CTkFrame):
     def zamknij_frame(self):
         self.place_forget()
 
+    def passToServerChecker(self):
+        self.hostname__ = self.serverDate.get('0.0', 'end').strip(),
+        self.username__ = self.userNameDate.get('0.0', 'end').strip(),
+        self.password__ = self.passwordDate.get('0.0', 'end').strip(),
+        self.ftpCatDir_ = self.pathDate.get('0.0', 'end').strip()
+        tabb = [self.hostname__,self.username__, self.password__, self.ftpCatDir_]
+        return tabb
+    def commander(self):
+
+        # if self.hostname__ is not None and self.username__ is not None and self.password__ is not None and self.ftpCatDir_ is not None:
+        sC.connectToServerSFTP(
+            catDir="aa",
+            hostname_=self.serverDate.get('0.0', 'end').strip(),
+            username_=self.userNameDate.get('0.0', 'end').strip(),
+            password_=self.passwordDate.get('0.0', 'end').strip(),
+            ftpCatDir=self.pathDate.get('0.0', 'end').strip()
+        )
+
+        return True
 
 class App(ctk.CTk):
     def __init__(self):
@@ -143,6 +162,9 @@ class App(ctk.CTk):
                              int(dimensions)).psBannerResizer()
             # ptw.convertToWebp(self.ban_dir)
             # ptw.convertToWebp2(self.ban_dir)
+            print(ServerLogView(master=self).passToServerChecker()[2])
+            arr = ServerLogView(master=self).commander()
+
 
             # sC.connectToServer(f"{self.ban_dir}\\Banner")
 
@@ -150,6 +172,6 @@ class App(ctk.CTk):
         self.quit()
 
 
-App()
+# App()
 
 
