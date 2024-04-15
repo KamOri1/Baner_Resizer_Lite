@@ -51,22 +51,29 @@ class ServerLogView(ctk.CTkFrame):
 
 
         self.button_1 = ctk.CTkButton(self, text='Connect', width=100, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 14), command=self.commander)
+                                      font=('Open Sans', 14), command=self.fun)
         self.button_1.place(x=269, y=210, anchor='center')
         self.button_2 = ctk.CTkButton(self, text='Close', width=100, fg_color="red", hover_color='#d11507',
                                       font=('Open Sans', 14), command=self.zamknij_frame)
         self.button_2.place(x=269, y=250, anchor='center')
-
+        self.tabb = self.passToServerChecker()
     def zamknij_frame(self):
         self.place_forget()
 
     def passToServerChecker(self):
-        self.hostname__ = self.serverDate.get('0.0', 'end').strip(),
-        self.username__ = self.userNameDate.get('0.0', 'end').strip(),
-        self.password__ = self.passwordDate.get('0.0', 'end').strip(),
-        self.ftpCatDir_ = self.pathDate.get('0.0', 'end').strip()
-        tabb = [self.hostname__,self.username__, self.password__, self.ftpCatDir_]
-        return tabb
+        self.hostname__ = str(self.serverDate.get('0.0', 'end').strip())
+        self.username__ = str(self.userNameDate.get('0.0', 'end').strip())
+        self.password__ = str(self.passwordDate.get('0.0', 'end').strip())
+        self.ftpCatDir_ = str(self.pathDate.get('0.0', 'end').strip())
+        self.tabb = [self.hostname__,self.username__, self.password__, self.ftpCatDir_]
+        # print(tabb)
+        return self.tabb
+    def fun(self):
+        a = self.passToServerChecker()
+        st = sC.ServerConnectionAction()
+        st.connectionCheck("ftp",  a[0],  a[1],  a[2], a[3])
+
+        print("ftp",  a[0],  a[1],  a[2], a[3])
     def commander(self):
 
         # if self.hostname__ is not None and self.username__ is not None and self.password__ is not None and self.ftpCatDir_ is not None:
@@ -78,7 +85,7 @@ class ServerLogView(ctk.CTkFrame):
             ftpCatDir=self.pathDate.get('0.0', 'end').strip()
         )
 
-        return True
+
 
 class App(ctk.CTk):
     def __init__(self):

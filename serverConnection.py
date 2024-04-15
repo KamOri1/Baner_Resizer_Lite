@@ -7,7 +7,7 @@ class ServerConnectionAction:
     def __init__(self):
         ...
 
-    def connectionCheck(self, catDir, ftpOrSftp, hostnameData, usernameData, passwordData, ftpCatDir):
+    def connectionCheck(self, ftpOrSftp, hostnameData, usernameData, passwordData, ftpCatDir):
         self.ftpOrSftp = ftpOrSftp
         self.hostnameData = hostnameData
         self.usernameData = usernameData
@@ -25,6 +25,7 @@ class ServerConnectionAction:
                     print(f"connected to server: {sftp.getcwd()}")
                     sftp.chdir(ftpCatDir)
                     print(f"connected to server 2: {sftp.getcwd()}")
+
             elif self.ftpOrSftp == 'ftp':
                 with FTP(host=self.hostnameData,
                          user=self.usernameData,
