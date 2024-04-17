@@ -79,7 +79,7 @@ class App(ctk.CTk):
         if self.ban_dir is not None:
             self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, width=300,
                                                    height=10, border_color='green', border_width=1)
-            self.dateforCatalog1_.place(x=420, y=120, anchor='center')
+            self.dateforCatalog1_.place(x=420, y=122, anchor='center')
             self.dateforCatalog1_.insert('0.0', self.ban_dir)
             self.dateforCatalog1_.configure(state="disabled")
 

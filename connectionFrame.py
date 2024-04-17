@@ -34,13 +34,13 @@ class ServerLogView(ctk.CTkFrame):
         self.passwordDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1, width=200, height=10)
         self.pathDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1, width=200, height=10)
         self.R1 = ctk.CTkRadioButton(master=self, text="FTP", variable=self.var, value="ftp", hover_color='#d11507',
-                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14))
+                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14), border_width_checked=2,border_width_unchecked=2, fg_color='#d11507')
         self.R2 = ctk.CTkRadioButton(master=self, text="SFTP", variable=self.var, value="sftp", hover_color='#d11507',
-                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14))
-        self.button_1 = ctk.CTkButton(self, text='Connect', width=100, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 14), command=self.fun)
-        self.button_2 = ctk.CTkButton(self, text='Close', width=100, fg_color="red", hover_color='#d11507',
-                                      font=('Open Sans', 14), command=self.close_frame)
+                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14), border_width_checked=2,border_width_unchecked=2, fg_color='#d11507')
+        self.button_1 = ctk.CTkButton(self, text='Connect', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
+                                      font=('Open Sans', 12), command=self.fun)
+        self.button_2 = ctk.CTkButton(self, text='Close', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
+                                      font=('Open Sans', 12), command=self.close_frame)
 
     def create_layout(self):
         self.label1.place(x=60, y=40, anchor='center')
