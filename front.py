@@ -5,10 +5,8 @@ from tkinter import filedialog as fd
 import APS_API as aps
 import os
 import connectionFrame as cF
-
-
 import serverConnection as sC
-# import pngTowebp as ptw
+import pngTowebp as ptw
 
 
 class App(ctk.CTk):
@@ -22,6 +20,7 @@ class App(ctk.CTk):
         # widgets
         self.create_widgets()
         self.create_layout()
+
         # run
         self.mainloop()
 
@@ -30,11 +29,16 @@ class App(ctk.CTk):
         self.my_serv.configure(width=450, height=280)
         self.my_serv.place(x=360, y=150, anchor='center')
         self.my_serv.fun()
+        self.my_serv.asa()
+
 
     def create_widgets(self):
-        self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 16))
+        self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 14))
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
-                                              width=200, height=10)
+                                          width=200, height=10)
+        self.switch_var = tk.StringVar(value="on")
+        # self.switch_var.trace_add("write", self.switch_event)
+        self.switch_1= ctk.CTkSwitch(master=self, text=".webp", variable=self.switch_var,onvalue="on", offvalue="off", progress_color='green',fg_color='red', switch_height=13,font=('Open Sans', 14))
         self.var = tk.IntVar()
         self.var.trace_add("write", self.update_cam_data)
         self.R1 = ctk.CTkRadioButton(master=self, text="610x242", variable=self.var, value=610, hover_color='#d11507',
@@ -53,14 +57,30 @@ class App(ctk.CTk):
 
         self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
                                       font=('Open Sans', 12), command=self.quite_app)
+        self.oo = 'None'
+        self.aaa()
+        self.info_var = tk.StringVar(value=self.oo)
+        # self.infoFrame = ctk.CTkLabel(master=self, corner_radius=5, width=300,
+        #                                            height=120, textvariable= self.info_var)
+        self.infoLogFrame = ctk.CTkScrollableFrame(master=self, width=300, height=20)
+        self.infoLogFrame.place(x=407, y=250, anchor='center')
+        for x in range(20):
 
+            self.label258 = ctk.CTkLabel(master=self.infoLogFrame, textvariable= self.info_var, font=('Open Sans', 14)).pack(pady=10)
 
         self.ban_dir = None
         self.baner_size_data = None
+        self.switch_data = None
+    def aaa(self):
+        a = 0
+        while a < 100:
+            self.oo += str(a) + '\n'
+            a +=1
 
     def create_layout(self):
         self.label1.place(x=255, y=40, anchor='center')
         self.dateforCatalog_.place(x=470, y=40, anchor='center')
+        self.switch_1.place(x=320, y=80, anchor='center')
         self.R1.place(x=422, y=80, anchor='center')
         self.R2.place(x=522, y=80, anchor='center')
         self.button_1.place(x=60, y=85, anchor='center')
@@ -68,11 +88,16 @@ class App(ctk.CTk):
         self.button_3.place(x=60, y=165, anchor='center')
         self.button_4.place(x=60, y=205, anchor='center')
         self.button_5.place(x=60, y=245, anchor='center')
+        #self.infoFrame.place(x=420, y=220, anchor='center')
+
 
     def update_cam_data(self, *args):
         # Get the selected value from the variable
         self.baner_size_data = self.var.get()
 
+    def switch_event(self):
+        self.switch_data = self.switch_var.get()
+        return self.switch_data
     def get_banner_dir(self):
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         # self.button_2.config(state='normal')   Enable button_2 after directory selection
@@ -90,12 +115,16 @@ class App(ctk.CTk):
             if os.path.exists(f"{self.ban_dir}\\Banner") == False:
                 os.makedirs(f"{self.ban_dir}\\Banner")
             print(f"To jest to: {self.dateforCatalog_.get('0.0', 'end')}")
-            aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
-                             int(dimensions)).psBannerResizer()
+            photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
+                             int(dimensions))
+            photoShopAPi.psBannerResizer(self.info_var)
+            print('@@@@@@@@@@@@@@@@@')
+            self.webPisON()
+
             # ptw.convertToWebp(self.ban_dir)
             # ptw.convertToWebp2(self.ban_dir)
             print('to je to je to je')
-            self.sendFiletoServer()
+            # self.sendFiletoServer()
 
     def sendFiletoServer(self):
         spr = self.my_serv.passToServerIfTrue()
@@ -103,10 +132,16 @@ class App(ctk.CTk):
         if spr is not None:
             sC.ServerConnectionAction().connectioFtpOrSftp(spr[4], f"{self.ban_dir}\\Banner", spr[0], spr[1], spr[2],
                                                            spr[3])
+
         # else:
         #     sC.connectToServerSFTP(self.ban_dir, spr[0], spr[1], spr[2], spr[3])
 
             # sC.connectToServer(f"{self.ban_dir}\\Banner")
+    def webPisON(self):
+        webp = self.switch_event()
+        print('to jest webop', webp)
+        if webp == 'on':
+            ptw.convertToWebp2(self.ban_dir)
 
     def quite_app(self):
         self.quit()
