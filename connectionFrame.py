@@ -22,13 +22,15 @@ class ServerLogView(ctk.CTkFrame):
 
 
 
-
+    def asa(self):
+        for a in range(10):
+            print('to jest nr: ', a)
 
     def create_widgets(self):
-        self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 16))
-        self.label2 = ctk.CTkLabel(master=self, text='User Name: ', font=('Open Sans', 16))
-        self.label3 = ctk.CTkLabel(master=self, text='Password: ', font=('Open Sans', 16))
-        self.label4 = ctk.CTkLabel(master=self, text='Path: ', font=('Open Sans', 16))
+        self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 14))
+        self.label2 = ctk.CTkLabel(master=self, text='User Name: ', font=('Open Sans', 14))
+        self.label3 = ctk.CTkLabel(master=self, text='Password: ', font=('Open Sans', 14))
+        self.label4 = ctk.CTkLabel(master=self, text='Path: ', font=('Open Sans', 14))
         self.serverDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1, width=200, height=10)
         self.userNameDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1, width=200, height=10)
         self.passwordDate = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1, width=200, height=10)
@@ -51,8 +53,8 @@ class ServerLogView(ctk.CTkFrame):
         self.userNameDate.place(x=220, y=80, anchor='center')
         self.passwordDate.place(x=220, y=120, anchor='center')
         self.pathDate.place(x=220, y=160, anchor='center')
-        self.R1.place(x=60, y=210, anchor='center')
-        self.R2.place(x=60, y=250, anchor='center')
+        self.R1.place(x=70, y=210, anchor='center')
+        self.R2.place(x=130, y=210, anchor='center')
         self.button_1.place(x=269, y=210, anchor='center')
         self.button_2.place(x=269, y=250, anchor='center')
 
