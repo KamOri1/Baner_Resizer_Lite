@@ -38,19 +38,22 @@ class App(ctk.CTk):
         self.var = tk.IntVar()
         self.var.trace_add("write", self.update_cam_data)
         self.R1 = ctk.CTkRadioButton(master=self, text="610x242", variable=self.var, value=610, hover_color='#d11507',
-                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14))
+                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14), border_width_checked=2,border_width_unchecked=2, fg_color='#d11507')
         self.R2 = ctk.CTkRadioButton(master=self, text="650x490", variable=self.var, value=650, hover_color='#d11507',
-                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14))
-        self.button_1 = ctk.CTkButton(master=self, text='Select folder', width=100, fg_color="green",
+                                     radiobutton_width=15, radiobutton_height=15, font=('Open Sans', 14), border_width_checked=2,border_width_unchecked=2, fg_color='#d11507')
+        self.button_1 = ctk.CTkButton(master=self, text='Select folder', width=80, height=26, fg_color="green",
                                       hover_color='#34661e',
-                                      font=('Open Sans', 14), command=self.get_banner_dir)
-        self.button_2 = ctk.CTkButton(master=self, text='Resize', width=100, fg_color="green", hover_color='#34661e',
-                                      font=('Open Sans', 14), command=self.resize_banner)
-        self.button_3 = ctk.CTkButton(self, text='Connection', width=100, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 14), command=self.serverFrame)
+                                      font=('Open Sans', 12), command=self.get_banner_dir)
+        self.button_2 = ctk.CTkButton(master=self, text='Resize', width=80, height=26, fg_color="green", hover_color='#34661e',
+                                      font=('Open Sans', 12), command=self.resize_banner)
+        self.button_3 = ctk.CTkButton(master=self, text='Resend', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
+                                      font=('Open Sans', 12), command=self.sendFiletoServer)
+        self.button_4 = ctk.CTkButton(self, text='Connection', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
+                                      font=('Open Sans', 12), command=self.serverFrame)
 
-        self.button_4 = ctk.CTkButton(master=self, text='Exit', width=100, fg_color="red", hover_color='#d11507',
-                                      font=('Open Sans', 14), command=self.quite_app)
+        self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
+                                      font=('Open Sans', 12), command=self.quite_app)
+
 
         self.ban_dir = None
         self.baner_size_data = None
@@ -58,12 +61,13 @@ class App(ctk.CTk):
     def create_layout(self):
         self.label1.place(x=255, y=40, anchor='center')
         self.dateforCatalog_.place(x=470, y=40, anchor='center')
-        self.R1.place(x=197, y=80, anchor='center')
-        self.R2.place(x=297, y=80, anchor='center')
-        self.button_1.place(x=60, y=120, anchor='center')
-        self.button_2.place(x=60, y=160, anchor='center')
-        self.button_3.place(x=60, y=200, anchor='center')
-        self.button_4.place(x=60, y=240, anchor='center')
+        self.R1.place(x=422, y=80, anchor='center')
+        self.R2.place(x=522, y=80, anchor='center')
+        self.button_1.place(x=60, y=85, anchor='center')
+        self.button_2.place(x=60, y=125, anchor='center')
+        self.button_3.place(x=60, y=165, anchor='center')
+        self.button_4.place(x=60, y=205, anchor='center')
+        self.button_5.place(x=60, y=245, anchor='center')
 
     def update_cam_data(self, *args):
         # Get the selected value from the variable
@@ -73,9 +77,9 @@ class App(ctk.CTk):
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         # self.button_2.config(state='normal')   Enable button_2 after directory selection
         if self.ban_dir is not None:
-            self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='red', width=300,
-                                                   height=10)
-            self.dateforCatalog1_.place(x=300, y=120, anchor='center')
+            self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, width=300,
+                                                   height=10, border_color='green', border_width=1)
+            self.dateforCatalog1_.place(x=420, y=120, anchor='center')
             self.dateforCatalog1_.insert('0.0', self.ban_dir)
             self.dateforCatalog1_.configure(state="disabled")
 
@@ -91,13 +95,16 @@ class App(ctk.CTk):
             # ptw.convertToWebp(self.ban_dir)
             # ptw.convertToWebp2(self.ban_dir)
             print('to je to je to je')
-            spr = self.my_serv.passToServerIfTrue()
-            print(spr)
-            if spr is not None:
-                sC.ServerConnectionAction().connectioFtpOrSftp(spr[4], f"{self.ban_dir}\\Banner", spr[0], spr[1], spr[2], spr[3])
-            # else:
-            #     sC.connectToServerSFTP(self.ban_dir, spr[0], spr[1], spr[2], spr[3])
+            self.sendFiletoServer()
 
+    def sendFiletoServer(self):
+        spr = self.my_serv.passToServerIfTrue()
+        print(spr)
+        if spr is not None:
+            sC.ServerConnectionAction().connectioFtpOrSftp(spr[4], f"{self.ban_dir}\\Banner", spr[0], spr[1], spr[2],
+                                                           spr[3])
+        # else:
+        #     sC.connectToServerSFTP(self.ban_dir, spr[0], spr[1], spr[2], spr[3])
 
             # sC.connectToServer(f"{self.ban_dir}\\Banner")
 

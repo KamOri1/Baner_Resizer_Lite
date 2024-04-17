@@ -90,7 +90,7 @@ class ServerConnectionAction:
                         print(f'Baner {ban} został przesłany na server')
                     print(
                         "Wszystkie banery zostały przesłane na server #######################################################")
-                ftp.quit()
+            ftp.quit()
 
 
 
