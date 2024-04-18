@@ -10,8 +10,8 @@ class PhotoshopAPI:
         self.width_height = width_height
         self.a = ''
 
-    def psBannerResizer(self, v):
-        self.v = v
+    def psBannerResizer(self):
+
 
         app = ps.Application()
         banner_check = list(os.listdir(f"{self.catDir}"))
@@ -35,8 +35,7 @@ class PhotoshopAPI:
                 options = ps.PNGSaveOptions()
                 banner_file.saveAs(png, options, asCopy=True)
                 banner_file.close()
-                self.a += banner_name + '\n'
-                v.set(self.a)
+
                 print(f"zeskalowano {banner_name}")
 
 
@@ -44,8 +43,7 @@ class PhotoshopAPI:
                 continue
         # return v.set(self.a)
 
-    def zwrot(self):
-        ...
+
     # def closePhotoshop(self):
     #     if closePS.lower() == "close_ps":
     #         # zamyka program photoshop

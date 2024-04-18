@@ -22,9 +22,7 @@ class ServerLogView(ctk.CTkFrame):
 
 
 
-    def asa(self):
-        for a in range(10):
-            print('to jest nr: ', a)
+
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 14))

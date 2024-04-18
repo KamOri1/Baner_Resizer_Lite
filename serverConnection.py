@@ -81,7 +81,7 @@ class ServerConnectionAction:
             print("connected to ...")
             print(ftp.cwd(ftpCatDir))  # Change to `other_dir/
             current_directory = ftp.pwd()
-            if current_directory == '':  # lokalizacja katalogu do img
+            if current_directory == catDir:  # lokalizacja katalogu do img
                 print(f"You are in the {current_directory} directory.")
                 checkToSend = list(os.listdir(catDir))
                 for ban in checkToSend:

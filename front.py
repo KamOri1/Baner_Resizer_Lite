@@ -29,7 +29,7 @@ class App(ctk.CTk):
         self.my_serv.configure(width=450, height=280)
         self.my_serv.place(x=360, y=150, anchor='center')
         self.my_serv.fun()
-        self.my_serv.asa()
+
 
 
     def create_widgets(self):
@@ -57,25 +57,11 @@ class App(ctk.CTk):
 
         self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
                                       font=('Open Sans', 12), command=self.quite_app)
-        self.oo = 'None'
-        self.aaa()
-        self.info_var = tk.StringVar(value=self.oo)
-        # self.infoFrame = ctk.CTkLabel(master=self, corner_radius=5, width=300,
-        #                                            height=120, textvariable= self.info_var)
-        self.infoLogFrame = ctk.CTkScrollableFrame(master=self, width=300, height=20)
-        self.infoLogFrame.place(x=407, y=250, anchor='center')
-        for x in range(20):
-
-            self.label258 = ctk.CTkLabel(master=self.infoLogFrame, textvariable= self.info_var, font=('Open Sans', 14)).pack(pady=10)
 
         self.ban_dir = None
         self.baner_size_data = None
         self.switch_data = None
-    def aaa(self):
-        a = 0
-        while a < 100:
-            self.oo += str(a) + '\n'
-            a +=1
+
 
     def create_layout(self):
         self.label1.place(x=255, y=40, anchor='center')
@@ -88,7 +74,7 @@ class App(ctk.CTk):
         self.button_3.place(x=60, y=165, anchor='center')
         self.button_4.place(x=60, y=205, anchor='center')
         self.button_5.place(x=60, y=245, anchor='center')
-        #self.infoFrame.place(x=420, y=220, anchor='center')
+
 
 
     def update_cam_data(self, *args):
@@ -117,21 +103,21 @@ class App(ctk.CTk):
             print(f"To jest to: {self.dateforCatalog_.get('0.0', 'end')}")
             photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
                              int(dimensions))
-            photoShopAPi.psBannerResizer(self.info_var)
-            print('@@@@@@@@@@@@@@@@@')
+            photoShopAPi.psBannerResizer()
+
             self.webPisON()
 
             # ptw.convertToWebp(self.ban_dir)
             # ptw.convertToWebp2(self.ban_dir)
-            print('to je to je to je')
+
             # self.sendFiletoServer()
 
     def sendFiletoServer(self):
-        spr = self.my_serv.passToServerIfTrue()
-        print(spr)
-        if spr is not None:
-            sC.ServerConnectionAction().connectioFtpOrSftp(spr[4], f"{self.ban_dir}\\Banner", spr[0], spr[1], spr[2],
-                                                           spr[3])
+
+        # print(spr)
+        if self.my_serv is not None:
+            spr = self.my_serv.passToServerIfTrue()
+            sC.ServerConnectionAction().connectioFtpOrSftp(spr[4], f"{self.ban_dir}\\Banner", spr[0], spr[1], spr[2],spr[3])
 
         # else:
         #     sC.connectToServerSFTP(self.ban_dir, spr[0], spr[1], spr[2], spr[3])
