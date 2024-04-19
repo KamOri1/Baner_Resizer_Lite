@@ -3,24 +3,33 @@ import os
 
 
 class PhotoshopAPI:
-    def __init__(self, catDir=None, data=None, width_height=None):
+    def __init__(self, catDir=None, data=None, width_height=None, b_mb='on'):
 
         self.catDir = catDir
         self.data = data
         self.width_height = width_height
         self.a = ''
-
+        self.b_mb = b_mb
     def psBannerResizer(self):
 
 
         app = ps.Application()
         banner_check = list(os.listdir(f"{self.catDir}"))
-        if self.width_height == 650:
-            args = [650, 490]
-            banner_format = '_mb'
+        if self.b_mb == 'on':
+            if self.width_height == 650:
+                args = [650, 490]
+                banner_format = '_mb'
+            else:
+                args = [610, 242]
+                banner_format = 'b'
         else:
-            args = [610, 242]
-            banner_format = 'b'
+            if self.width_height == 650:
+                args = [650, 490]
+                banner_format = ''
+            else:
+                args = [610, 242]
+                banner_format = ''
+
         for banner_name in banner_check:
 
             print(banner_name)

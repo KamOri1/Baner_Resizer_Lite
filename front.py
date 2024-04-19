@@ -36,9 +36,13 @@ class App(ctk.CTk):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 14))
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                           width=200, height=10)
-        self.switch_var = tk.StringVar(value="on")
+        self.switch_var_0 = tk.StringVar(value="on")
+        self.switch_var_1 = tk.StringVar(value="on")
         # self.switch_var.trace_add("write", self.switch_event)
-        self.switch_1= ctk.CTkSwitch(master=self, text=".webp", variable=self.switch_var,onvalue="on", offvalue="off", progress_color='green',fg_color='red', switch_height=13,font=('Open Sans', 14))
+        self.switch_0 = ctk.CTkSwitch(master=self, text="b _mb", variable=self.switch_var_0, onvalue="on", offvalue="off",
+                                      progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14))
+        self.switch_1= ctk.CTkSwitch(master=self, text=".webp", variable=self.switch_var_1,onvalue="on", offvalue="off",
+                                     progress_color='green',fg_color='red', switch_height=13,font=('Open Sans', 14))
         self.var = tk.IntVar()
         self.var.trace_add("write", self.update_cam_data)
         self.R1 = ctk.CTkRadioButton(master=self, text="610x242", variable=self.var, value=610, hover_color='#d11507',
@@ -60,12 +64,14 @@ class App(ctk.CTk):
 
         self.ban_dir = None
         self.baner_size_data = None
-        self.switch_data = None
+        self.switch_data_0 = None
+        self.switch_data_1 = None
 
 
     def create_layout(self):
         self.label1.place(x=255, y=40, anchor='center')
         self.dateforCatalog_.place(x=470, y=40, anchor='center')
+        self.switch_0.place(x=220, y=80, anchor='center')
         self.switch_1.place(x=320, y=80, anchor='center')
         self.R1.place(x=422, y=80, anchor='center')
         self.R2.place(x=522, y=80, anchor='center')
@@ -81,9 +87,12 @@ class App(ctk.CTk):
         # Get the selected value from the variable
         self.baner_size_data = self.var.get()
 
-    def switch_event(self):
-        self.switch_data = self.switch_var.get()
-        return self.switch_data
+    def switch_event_0(self):
+        self.switch_data_0 = self.switch_var_0.get()
+        return self.switch_data_0
+    def switch_event_1(self):
+        self.switch_data_1 = self.switch_var_1.get()
+        return self.switch_data_1
     def get_banner_dir(self):
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         # self.button_2.config(state='normal')   Enable button_2 after directory selection
@@ -101,8 +110,10 @@ class App(ctk.CTk):
             if os.path.exists(f"{self.ban_dir}\\Banner") == False:
                 os.makedirs(f"{self.ban_dir}\\Banner")
             print(f"To jest to: {self.dateforCatalog_.get('0.0', 'end')}")
+            is_b_bm_on = self.switch_event_0()
+            print('tik klikna', is_b_bm_on)
             photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
-                             int(dimensions))
+                             int(dimensions), is_b_bm_on)
             photoShopAPi.psBannerResizer()
 
             self.webPisON()
@@ -124,7 +135,7 @@ class App(ctk.CTk):
 
             # sC.connectToServer(f"{self.ban_dir}\\Banner")
     def webPisON(self):
-        webp = self.switch_event()
+        webp = self.switch_event_1()
         print('to jest webop', webp)
         if webp == 'on':
             ptw.convertToWebp2(self.ban_dir)
