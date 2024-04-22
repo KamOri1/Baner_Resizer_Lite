@@ -6,6 +6,7 @@ import os
 import connectionFrame as cF
 import serverConnection as sC
 import pngTowebp as ptw
+import serverPass as sP
 
 
 class App(ctk.CTk):
@@ -123,6 +124,7 @@ class App(ctk.CTk):
                 print('There are no files to scale in this directory')
 
     def sendFiletoServer(self):
+
         if self.my_serv is not None:
             sendFile = self.my_serv.passToServerIfTrue()
             sC.ServerConnectionAction().connectioFtpOrSftp(sendFile['ftpORsftp'],
@@ -133,10 +135,13 @@ class App(ctk.CTk):
                                                            sendFile['ftpCatDir'])
 
         else:
-            try:
-                sC.ServerConnectionAction().connectToServerFTP(f"{self.ban_dir}\\Banner")
-            except FileNotFoundError as e:
-                print(e)
+            if '' not in sP.passToFTP.values():
+                try:
+                    sC.ServerConnectionAction().connectToServerFTP(f"{self.ban_dir}\\Banner")
+                except FileNotFoundError as e:
+                    print(e)
+            else:
+                print('Complete the server data')
 
 
 
