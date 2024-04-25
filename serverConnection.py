@@ -11,8 +11,7 @@ class ServerConnectionAction:
         self.usernameData = usernameData
         self.passwordData = passwordData
         self.ftpCatDir = ftpCatDir
-        if self.ftpOrSftp is not None and self.hostnameData is not None and self.usernameData is not None \
-            and self.passwordData is not None and self.ftpCatDir is not None:
+        if all([self.ftpOrSftp, self.hostnameData, self.usernameData, self.passwordData, self.ftpCatDir]):
             try:
                 if self.ftpOrSftp == 'sftp':
                     self.cnopts = paramiko.client.SSHClient()
@@ -35,6 +34,8 @@ class ServerConnectionAction:
                         print(f"Connected to the server {sP.passToFTP['serverName']}: {ftp.pwd()}")
                         self.ftp.quit()
                     return True
+            except TimeoutError as te:
+                print(te)
             except:
                 print('Cannot connect to the server')
                 return False
@@ -86,6 +87,5 @@ class ServerConnectionAction:
                     with open(f"{catDir}\\{ban}", 'rb') as image_file:
                         ftp.storbinary(f'STOR {ban}', image_file)
                         print(f'The banner {ban} has been uploaded to the server')
-                    print(
-                        "All banners were uploaded to the server #######################################################")
+                print("All banners were uploaded to the server #######################################################")
             ftp.quit()
