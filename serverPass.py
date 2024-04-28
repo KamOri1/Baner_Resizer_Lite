@@ -1,11 +1,11 @@
-passToFTP= {"hostname": '',
-            "username": '',
-            "password": '',
-            "ftpCatDir": '',
-            "serverName": ''}
+passToFTP= {"hostname": 'add default data',
+            "username": 'add default data',
+            "password": 'add default data',
+            "ftpCatDir": 'add default data',
+            "serverName": 'add default data'}
 
-passToSFTP= {"hostname": '',
-            "username": '',
-            "password": '',
-            "ftpCatDir": '',
-            "serverName": ''}
+passToSFTP= {"hostname": 'add default data',
+            "username": 'add default data',
+            "password": 'add default data',
+            "ftpCatDir": 'add default data',
+            "serverName": 'add default data'}
