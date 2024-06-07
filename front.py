@@ -9,6 +9,7 @@ import pngTowebp as ptw
 import serverPass as sP
 
 
+
 class App(ctk.CTk):
     def __init__(self):
         # main setup
@@ -17,6 +18,7 @@ class App(ctk.CTk):
         self.geometry('600x300')
         self.resizable(False, False)
         self.configure(fg_color='#242424')
+        self.flag = False
 
 
         # widgets
@@ -25,12 +27,35 @@ class App(ctk.CTk):
 
         # run
         self.mainloop()
+    def sprw(self):
+
+        if self.flag == True:
+            # if self.my_serv.winfo_ismapped() == 1:
+            #     pass
+            #     # print('flaga na false',self.my_serv.winfo_exists())
+            #     # print(self.flag)
+            if self.my_serv.winfo_ismapped() == 0:
+
+                # print('Nie ma okna', self.my_serv.winfo_exists())
+                # print(self.flag)
+                self.serverFrame()
+                self.flag = True
+
+        elif self.flag == False:
+
+                self.serverFrame()
+                self.flag = True
+        # if self.my_serv.winfo_exists() == False:
+        #     self.flag = False
+
 
     def serverFrame(self):
-        self.my_serv = cF.ServerLogView(master=self)
-        self.my_serv.configure(width=450, height=280, fg_color='#2b2b2b')
-        self.my_serv.place(x=360, y=150, anchor='center')
-        self.my_serv.connectionTest()
+            self.my_serv = cF.ServerLogView(master=self)
+            self.my_serv.configure(width=450, height=280, fg_color='#2b2b2b')
+            self.my_serv.place(x=360, y=150, anchor='center')
+            self.my_serv.connectionTest()
+
+
 
 
 
@@ -59,7 +84,7 @@ class App(ctk.CTk):
         self.button_3 = ctk.CTkButton(master=self, text='Resend', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
                                       font=('Open Sans', 12), command=self.sendFiletoServer , state="disabled", text_color='#ffffff')
         self.button_4 = ctk.CTkButton(self, text='Connection', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 12), command=self.serverFrame, text_color='#ffffff')
+                                      font=('Open Sans', 12), command=self.sprw, text_color='#ffffff')
 
         self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
                                       font=('Open Sans', 12), command=self.quite_app, text_color='#ffffff')
@@ -84,6 +109,7 @@ class App(ctk.CTk):
         self.button_4.place(x=60, y=205, anchor='center')
         self.button_5.place(x=60, y=245, anchor='center')
 
+
     def update_cam_data(self, *args):
         self.baner_size_data = self.var.get()
 
@@ -101,6 +127,7 @@ class App(ctk.CTk):
             self.dateforCatalog1_.place(x=420, y=122, anchor='center')
             self.dateforCatalog1_.insert('0.0', self.ban_dir)
             self.dateforCatalog1_.configure(state="disabled")
+            self.dateforCatalog1_.lower()
             self.button_2.configure(state="normal")
             self.button_3.configure(state="normal")
             self.resizeFlag = True
