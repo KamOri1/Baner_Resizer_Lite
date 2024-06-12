@@ -7,8 +7,8 @@ import connectionFrame as cF
 import serverConnection as sC
 import pngTowebp as ptw
 import serverPass as sP
-
-
+import name_cleaning
+import file_copy
 
 class App(ctk.CTk):
     def __init__(self):
@@ -39,11 +39,13 @@ class App(ctk.CTk):
                 # print('Nie ma okna', self.my_serv.winfo_exists())
                 # print(self.flag)
                 self.serverFrame()
+
                 self.flag = True
 
         elif self.flag == False:
 
                 self.serverFrame()
+
                 self.flag = True
         # if self.my_serv.winfo_exists() == False:
         #     self.flag = False
@@ -122,14 +124,21 @@ class App(ctk.CTk):
     def get_banner_dir(self):
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         if self.ban_dir is not None:
+
             self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, width=300,
-                                                   height=10, border_color='green', border_width=1, text_color='#ffffff',fg_color='#1d1e1e')
+                                                  height=10, border_color='green', border_width=1, text_color='#ffffff',fg_color='#1d1e1e')
+
+
             self.dateforCatalog1_.place(x=420, y=122, anchor='center')
+
             self.dateforCatalog1_.insert('0.0', self.ban_dir)
-            self.dateforCatalog1_.configure(state="disabled")
             self.dateforCatalog1_.lower()
+
+            self.dateforCatalog1_.configure(state="disabled",)
+
             self.button_2.configure(state="normal")
             self.button_3.configure(state="normal")
+
             self.resizeFlag = True
 
     def resize_banner(self):
@@ -141,10 +150,17 @@ class App(ctk.CTk):
             if plik_jpg_istnieje == True:
                 if os.path.exists(f"{self.ban_dir}\\Banner") == False:
                     os.makedirs(f"{self.ban_dir}\\Banner")
+
+                self.cleaning_napespace()
+
                 is_b_bm_on = self.switch_event_0()
                 photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
                                  int(dimensions), is_b_bm_on)
                 photoShopAPi.psBannerResizer()
+                self.copy_dach_fr(self.dateforCatalog_.get('0.0', 'end').strip(),self.m_or_mb_(dimensions, is_b_bm_on))
+                banner_check = list(os.listdir(f"{self.ban_dir}\\Banner"))
+                comm = f' {str(len(banner_check))} banners have been prepared '
+                print(f'{comm:=^80}')
                 self.webPisON()
                 self.sendFiletoServer()
             else:
@@ -177,6 +193,28 @@ class App(ctk.CTk):
         if webp == 'on':
             ptw.convertToWebp2(self.ban_dir)
 
+    def cleaning_napespace(self):
+        spr = name_cleaning.Clean_File_Name(self.ban_dir)
+        spr.clear_name()
+        #print('poprawa nazw zakończona')
+
+
+    def copy_dach_fr(self, data, ext):
+
+        f_cop = file_copy.Copy_Missing_C(self.ban_dir)
+        f_cop.file_copy_dach_2(data, ext)
+        # print('duplikowanie dach zakończone')
+        f_cop.file_copy_chf_2(data, ext)
+        # print('duplikowanie CHFR zakończone')
+    def m_or_mb_(self, dimension, on_of):
+        if on_of == 'on':
+            if int(dimension) == 650:
+
+                return '_mb'
+            else:
+                return 'b'
+        else:
+            return ''
     def quite_app(self):
         self.quit()
 
