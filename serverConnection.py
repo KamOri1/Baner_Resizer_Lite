@@ -67,8 +67,9 @@ class ServerConnectionAction:
                 for ban in checkToSend:
                     sftp.put(f"{catDir}\\{ban}", f"{ftpCatDir}//{ban}")
                     print(f'The banner {ban} has been uploaded to the server')
-                print(
-                    "All banners were uploaded to the server #######################################################")
+                comm = f' All banners were uploaded to the server '
+                print(f'{comm:=^80}')
+
             else:
                 print(f"{sftp.getcwd()}")
             cnopts.close()
@@ -87,5 +88,6 @@ class ServerConnectionAction:
                     with open(f"{catDir}\\{ban}", 'rb') as image_file:
                         ftp.storbinary(f'STOR {ban}', image_file)
                         print(f'The banner {ban} has been uploaded to the server')
-                print("All banners were uploaded to the server #######################################################")
+                comm = f' All banners were uploaded to the server '
+                print(f'{comm:=^80}')
             ftp.quit()
