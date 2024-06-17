@@ -14,7 +14,7 @@ class ServerLogView(ctk.CTkFrame):
         self.create_layout()
         self.defaulValues = None
         self.tabb = self.passToServerChecker()
-        self.lift()
+
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 14), text_color='#ffffff')
@@ -119,8 +119,6 @@ class ServerLogView(ctk.CTkFrame):
 
     def close_frame(self):
         self.place_forget()
-
-
 
     def passToServerChecker(self):
         self.hostname__ = str(self.serverDate.get().strip())

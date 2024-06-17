@@ -19,7 +19,7 @@ class App(ctk.CTk):
         self.resizable(False, False)
         self.configure(fg_color='#242424')
         self.flag = False
-
+        self.stringvar = tk.StringVar()
 
         # widgets
         self.create_widgets()
@@ -30,26 +30,13 @@ class App(ctk.CTk):
     def sprw(self):
 
         if self.flag == True:
-            # if self.my_serv.winfo_ismapped() == 1:
-            #     pass
-            #     # print('flaga na false',self.my_serv.winfo_exists())
-            #     # print(self.flag)
             if self.my_serv.winfo_ismapped() == 0:
-
-                # print('Nie ma okna', self.my_serv.winfo_exists())
-                # print(self.flag)
                 self.serverFrame()
-
                 self.flag = True
 
         elif self.flag == False:
-
                 self.serverFrame()
-
                 self.flag = True
-        # if self.my_serv.winfo_exists() == False:
-        #     self.flag = False
-
 
     def serverFrame(self):
             self.my_serv = cF.ServerLogView(master=self)
@@ -57,14 +44,12 @@ class App(ctk.CTk):
             self.my_serv.place(x=360, y=150, anchor='center')
             self.my_serv.connectionTest()
 
-
-
-
-
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 14), text_color='#ffffff')
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                           width=200, height=10,fg_color='#1d1e1e', text_color='#ffffff')
+        self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=300,  height=20, text_color='#ffffff',
+                                             fg_color='#1d1e1e', wraplength=300, justify='left')
         self.switch_var_0 = tk.StringVar(value="on")
         self.switch_var_1 = tk.StringVar(value="on")
         # self.switch_var.trace_add("write", self.switch_event)
@@ -110,6 +95,7 @@ class App(ctk.CTk):
         self.button_3.place(x=60, y=165, anchor='center')
         self.button_4.place(x=60, y=205, anchor='center')
         self.button_5.place(x=60, y=245, anchor='center')
+        self.dateforCatalog1_.place(x=420, y=122, anchor='center')
 
 
     def update_cam_data(self, *args):
@@ -121,24 +107,17 @@ class App(ctk.CTk):
     def switch_event_1(self):
         self.switch_data_1 = self.switch_var_1.get()
         return self.switch_data_1
+    def ban_dir_update(self):
+        self.stringvar.set(self.ban_dir)
     def get_banner_dir(self):
+        # stringvar = tk.StringVar()
+
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
+        self.ban_dir_update()
         if self.ban_dir is not None:
-
-            self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, width=300,
-                                                  height=10, border_color='green', border_width=1, text_color='#ffffff',fg_color='#1d1e1e')
-
-
-            self.dateforCatalog1_.place(x=420, y=122, anchor='center')
-
-            self.dateforCatalog1_.insert('0.0', self.ban_dir)
-            self.dateforCatalog1_.lower()
-
-            self.dateforCatalog1_.configure(state="disabled",)
 
             self.button_2.configure(state="normal")
             self.button_3.configure(state="normal")
-
             self.resizeFlag = True
 
     def resize_banner(self):
