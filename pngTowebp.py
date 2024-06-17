@@ -9,3 +9,6 @@ def convertToWebp2(catdir):
         Image.open(f"{catdir}\\Banner\\{file}").save(f"{catdir}\\Banner\\{file.replace('.png', '.webp')}",
             'webp', lossless=True)
         print(f'Plik {file} został skonwertowany do .webp')
+
+
+
