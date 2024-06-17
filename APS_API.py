@@ -25,7 +25,7 @@ class PhotoshopAPI:
             else:
                 args = [610, 242]
                 banner_format = ''
-
+        counter = 0
         for banner_name in banner_check:
             if banner_name.endswith('.jpg') or banner_name.endswith('.png') or banner_name.endswith('.mp4'):
                 try:
@@ -39,9 +39,12 @@ class PhotoshopAPI:
                     options = ps.PNGSaveOptions()
                     banner_file.saveAs(png, options, asCopy=True)
                     banner_file.close()
-
+                    counter +=1
                     print(f" - Banner: {new_banner_name.lower()}{self.data}{banner_format} has been scaled")
                 except:
                     print("Check if Adobe Photoshop does not perform an action")
             else:
                 continue
+
+        comm = f' {counter} banner has been scaled '
+        print(f'{comm:=^80}')
