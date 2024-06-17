@@ -7,7 +7,8 @@ import connectionFrame as cF
 import serverConnection as sC
 import pngTowebp as ptw
 import serverPass as sP
-
+import name_cleaning
+import file_copy
 
 class App(ctk.CTk):
     def __init__(self):
@@ -17,7 +18,8 @@ class App(ctk.CTk):
         self.geometry('600x300')
         self.resizable(False, False)
         self.configure(fg_color='#242424')
-
+        self.flag = False
+        self.stringvar = tk.StringVar()
 
         # widgets
         self.create_widgets()
@@ -25,19 +27,29 @@ class App(ctk.CTk):
 
         # run
         self.mainloop()
+    def sprw(self):
+
+        if self.flag == True:
+            if self.my_serv.winfo_ismapped() == 0:
+                self.serverFrame()
+                self.flag = True
+
+        elif self.flag == False:
+                self.serverFrame()
+                self.flag = True
 
     def serverFrame(self):
-        self.my_serv = cF.ServerLogView(master=self)
-        self.my_serv.configure(width=450, height=280, fg_color='#2b2b2b')
-        self.my_serv.place(x=360, y=150, anchor='center')
-        self.my_serv.connectionTest()
-
-
+            self.my_serv = cF.ServerLogView(master=self)
+            self.my_serv.configure(width=450, height=280, fg_color='#2b2b2b')
+            self.my_serv.place(x=360, y=150, anchor='center')
+            self.my_serv.connectionTest()
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 14), text_color='#ffffff')
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                           width=200, height=10,fg_color='#1d1e1e', text_color='#ffffff')
+        self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=300,  height=20, text_color='#ffffff',
+                                             fg_color='#1d1e1e', wraplength=300, justify='left')
         self.switch_var_0 = tk.StringVar(value="on")
         self.switch_var_1 = tk.StringVar(value="on")
         # self.switch_var.trace_add("write", self.switch_event)
@@ -59,7 +71,7 @@ class App(ctk.CTk):
         self.button_3 = ctk.CTkButton(master=self, text='Resend', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
                                       font=('Open Sans', 12), command=self.sendFiletoServer , state="disabled", text_color='#ffffff')
         self.button_4 = ctk.CTkButton(self, text='Connection', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 12), command=self.serverFrame, text_color='#ffffff')
+                                      font=('Open Sans', 12), command=self.sprw, text_color='#ffffff')
 
         self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
                                       font=('Open Sans', 12), command=self.quite_app, text_color='#ffffff')
@@ -83,6 +95,8 @@ class App(ctk.CTk):
         self.button_3.place(x=60, y=165, anchor='center')
         self.button_4.place(x=60, y=205, anchor='center')
         self.button_5.place(x=60, y=245, anchor='center')
+        self.dateforCatalog1_.place(x=420, y=122, anchor='center')
+
 
     def update_cam_data(self, *args):
         self.baner_size_data = self.var.get()
@@ -93,14 +107,15 @@ class App(ctk.CTk):
     def switch_event_1(self):
         self.switch_data_1 = self.switch_var_1.get()
         return self.switch_data_1
+    def ban_dir_update(self):
+        self.stringvar.set(self.ban_dir)
     def get_banner_dir(self):
+        # stringvar = tk.StringVar()
+
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
+        self.ban_dir_update()
         if self.ban_dir is not None:
-            self.dateforCatalog1_ = ctk.CTkTextbox(master=self, corner_radius=5, width=300,
-                                                   height=10, border_color='green', border_width=1, text_color='#ffffff',fg_color='#1d1e1e')
-            self.dateforCatalog1_.place(x=420, y=122, anchor='center')
-            self.dateforCatalog1_.insert('0.0', self.ban_dir)
-            self.dateforCatalog1_.configure(state="disabled")
+
             self.button_2.configure(state="normal")
             self.button_3.configure(state="normal")
             self.resizeFlag = True
@@ -114,10 +129,17 @@ class App(ctk.CTk):
             if plik_jpg_istnieje == True:
                 if os.path.exists(f"{self.ban_dir}\\Banner") == False:
                     os.makedirs(f"{self.ban_dir}\\Banner")
+
+                self.cleaning_napespace()
+
                 is_b_bm_on = self.switch_event_0()
                 photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
                                  int(dimensions), is_b_bm_on)
                 photoShopAPi.psBannerResizer()
+                self.copy_dach_fr(self.dateforCatalog_.get('0.0', 'end').strip(),self.m_or_mb_(dimensions, is_b_bm_on))
+                banner_check = list(os.listdir(f"{self.ban_dir}\\Banner"))
+                comm = f' {str(len(banner_check))} banners have been prepared '
+                print(f'{comm:=^80}')
                 self.webPisON()
                 self.sendFiletoServer()
             else:
@@ -150,6 +172,29 @@ class App(ctk.CTk):
         if webp == 'on':
             ptw.convertToWebp2(self.ban_dir)
 
+    def cleaning_napespace(self):
+        spr = name_cleaning.Clean_File_Name(self.ban_dir)
+        spr.clear_name()
+        #print('poprawa nazw zakończona')
+
+
+    def copy_dach_fr(self, data, ext):
+
+        f_cop = file_copy.Copy_Missing_C(self.ban_dir)
+        f_cop.file_copy_dach_2(data, ext)
+        # print('duplikowanie dach zakończone')
+        f_cop.file_copy_chf_2(data, ext)
+        # print('duplikowanie CHFR zakończone')
+    def m_or_mb_(self, dimension, on_of):
+        if on_of == 'on':
+            if int(dimension) == 650:
+
+                return '_mb'
+            else:
+                return 'b'
+        else:
+            return ''
     def quite_app(self):
         self.quit()
+
 
