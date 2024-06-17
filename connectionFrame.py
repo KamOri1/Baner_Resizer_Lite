@@ -2,6 +2,7 @@ import tkinter as tk
 import customtkinter as ctk
 import serverConnection as sC
 import serverPass as sP
+import front
 class ServerLogView(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
@@ -13,6 +14,7 @@ class ServerLogView(ctk.CTkFrame):
         self.create_layout()
         self.defaulValues = None
         self.tabb = self.passToServerChecker()
+
 
     def create_widgets(self):
         self.label1 = ctk.CTkLabel(master=self, text='Server: ', font=('Open Sans', 14), text_color='#ffffff')
@@ -61,6 +63,8 @@ class ServerLogView(ctk.CTkFrame):
         self.switch_0.place(x=70, y=250, anchor='center')
         self.button_1.place(x=269, y=210, anchor='center')
         self.button_2.place(x=269, y=250, anchor='center')
+
+
     def showPassword(self):
         showPass = self.passwordDate.cget("show")
         if showPass == '•':
@@ -145,3 +149,5 @@ class ServerLogView(ctk.CTkFrame):
 
     def passToServerIfTrue(self):
         return self.passToServerChecker()
+
+
