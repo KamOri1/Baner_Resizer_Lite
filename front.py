@@ -51,7 +51,7 @@ class App(ctk.CTk):
         self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=322,  height=25, text_color='#ffffff',
                                              fg_color='#1d1e1e', wraplength=300, justify='left', corner_radius=5, padx=5,pady=5, font=('Open Sans', 10))
         self.switch_var_0 = tk.StringVar(value="on")
-        self.switch_var_1 = tk.StringVar(value="on")
+        self.switch_var_1 = tk.StringVar(value="off")
         self.switch_var_2 = tk.StringVar(value="off")
         self.switch_0 = ctk.CTkSwitch(master=self, text="b _mb", variable=self.switch_var_0, onvalue="on", offvalue="off",
                                       progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14), text_color='#ffffff')
@@ -60,7 +60,7 @@ class App(ctk.CTk):
         self.switch_2 = ctk.CTkSwitch(master=self, text="Sun", variable=self.switch_var_2, onvalue="on",
                                       offvalue="off",
                                       progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14),
-                                      text_color='#ffffff')
+                                      text_color='#ffffff', command=self.resend_block)
         self.var = tk.IntVar()
         self.var.trace_add("write", self.update_cam_data)
         self.R1 = ctk.CTkRadioButton(master=self, text="610x242", variable=self.var, value=610, hover_color='#d11507',
@@ -126,44 +126,23 @@ class App(ctk.CTk):
             self.button_2.configure(state="normal")
             self.button_3.configure(state="normal")
             self.resizeFlag = True
-
+    def resend_block(self):
+        if self.switch_var_2.get() == 'on':
+            self.button_3.configure(state='disabled')
+        else:
+            self.button_3.configure(state='normal')
     def resize_banner(self):
         if self.ban_dir is not None and self.baner_size_data is not None:
             dimensions = self.baner_size_data
-            banner_check = list(os.listdir(f"{self.ban_dir}"))
-            plik_jpg_istnieje = any(
-                plik.endswith(rozszerzenie) for plik in banner_check for rozszerzenie in ['.jpg', '.png', '.mp4'])
-            # if plik_jpg_istnieje == True:
-            #     # if os.path.exists(f"{self.ban_dir}\\Banner") == False:
-            #     #     os.makedirs(f"{self.ban_dir}\\Banner")
-            #     # # Czyszczenie nazww
-            #     # self.cleaning_napespace()
-            #     # # Dodanie prefiksu _b lub _mb
-            #     is_b_bm_on = self.switch_event_0()
-            #     # # odpalenie PS
-            #     # photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
-            #     #                  int(dimensions), is_b_bm_on)
-            #     # photoShopAPi.psBannerResizer()
-            #     # # dodanie brakujacych plików
-            #     # self.copy_dach_fr(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),self.m_or_mb_(dimensions, is_b_bm_on))
-            #     # # komunikat o ilości przygotowanych banerów
-            #     # banner_check = list(os.listdir(f"{self.ban_dir}\\Banner"))
-            #     # comm = f' {str(len(banner_check))} banners have been prepared '
-            #     # print(f'{comm:=^80}')
-            #     # # jeśli webp On to stworzenie także w formacie .webp
-            #     # self.webPisON()
-            #     # # wysłanie na serwer
-            #     # self.sendFiletoServer(self.ban_dir)
-            #
-            # else:
-            #     print('There are no files to scale in this directory')
+
+
             is_b_bm_on = self.switch_event_0()
             is_sd_on = self.switch_event_2()
             self.prepare_and_send(int(dimensions), is_b_bm_on, is_sd_on)
 
     def prepare_and_send(self, dimensions,is_b_bm_on,  is_sd_on):
 
-        is_b_bm_on = self.switch_event_0()
+
         for root, dir, files in os.walk(self.ban_dir):
             if is_sd_on == 'on':
                 if os.path.basename(root) != 'Banner':
@@ -178,7 +157,7 @@ class App(ctk.CTk):
             self.convert_to_webp(root, is_sd_on)
             self.Server_send_file(root, is_sd_on)
 
-# Start  nowych funkcji os.walk ===============================================
+
     def clean_name_space(self, root, files):
         plik_jpg_istnieje = any(
             plik.endswith(rozszerzenie) for plik in files for rozszerzenie in ['.jpg', '.png', '.mp4'])
@@ -194,7 +173,6 @@ class App(ctk.CTk):
         photoShopAPi.psBannerResizer()
 
     def add_missed_file(self, root, files, dir, file_name, dimensions):
-
         if files != [] and dir == []:
             self.copy_dach_fr(root.replace('\\Banner', ""), file_name, dimensions)
 
@@ -216,7 +194,6 @@ class App(ctk.CTk):
         elif is_sd_on == 'off':
             self.sendFiletoServer(self.ban_dir)
 
-# Koniec nowych funkcji os.walk ===============================================
 
     def sendFiletoServer(self, ban_dir):
 
