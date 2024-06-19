@@ -27,7 +27,7 @@ class App(ctk.CTk):
 
         # run
         self.mainloop()
-    def sprw(self):
+    def connection_run(self):
 
         if self.flag == True:
             if self.my_serv.winfo_ismapped() == 0:
@@ -48,15 +48,19 @@ class App(ctk.CTk):
         self.label1 = ctk.CTkLabel(master=self, text='Campaign date YYYYMMDD: ', font=('Open Sans', 14), text_color='#ffffff')
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                           width=200, height=10,fg_color='#1d1e1e', text_color='#ffffff')
-        self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=300,  height=20, text_color='#ffffff',
-                                             fg_color='#1d1e1e', wraplength=300, justify='left')
+        self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=322,  height=25, text_color='#ffffff',
+                                             fg_color='#1d1e1e', wraplength=300, justify='left', corner_radius=5, padx=5,pady=5, font=('Open Sans', 10))
         self.switch_var_0 = tk.StringVar(value="on")
         self.switch_var_1 = tk.StringVar(value="on")
-        # self.switch_var.trace_add("write", self.switch_event)
+        self.switch_var_2 = tk.StringVar(value="off")
         self.switch_0 = ctk.CTkSwitch(master=self, text="b _mb", variable=self.switch_var_0, onvalue="on", offvalue="off",
                                       progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14), text_color='#ffffff')
         self.switch_1= ctk.CTkSwitch(master=self, text=".webp", variable=self.switch_var_1,onvalue="on", offvalue="off",
                                      progress_color='green',fg_color='red', switch_height=13,font=('Open Sans', 14), text_color='#ffffff')
+        self.switch_2 = ctk.CTkSwitch(master=self, text="Sun", variable=self.switch_var_2, onvalue="on",
+                                      offvalue="off",
+                                      progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14),
+                                      text_color='#ffffff')
         self.var = tk.IntVar()
         self.var.trace_add("write", self.update_cam_data)
         self.R1 = ctk.CTkRadioButton(master=self, text="610x242", variable=self.var, value=610, hover_color='#d11507',
@@ -69,9 +73,9 @@ class App(ctk.CTk):
         self.button_2 = ctk.CTkButton(master=self, text='Resize', width=80, height=26, fg_color="green", hover_color='#34661e',
                                       font=('Open Sans', 12), command=self.resize_banner, state="disabled", text_color='#ffffff')
         self.button_3 = ctk.CTkButton(master=self, text='Resend', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 12), command=self.sendFiletoServer , state="disabled", text_color='#ffffff')
+                                      font=('Open Sans', 12), command=self.send_file , state="disabled", text_color='#ffffff')
         self.button_4 = ctk.CTkButton(self, text='Connection', width=80, height=26, fg_color="#0033FF", hover_color='#0000FF',
-                                      font=('Open Sans', 12), command=self.sprw, text_color='#ffffff')
+                                      font=('Open Sans', 12), command=self.connection_run, text_color='#ffffff')
 
         self.button_5 = ctk.CTkButton(master=self, text='Exit', width=80, height=26, fg_color="#e33118", hover_color='#d11507',
                                       font=('Open Sans', 12), command=self.quite_app, text_color='#ffffff')
@@ -88,6 +92,7 @@ class App(ctk.CTk):
         self.dateforCatalog_.place(x=470, y=40, anchor='center')
         self.switch_0.place(x=220, y=80, anchor='center')
         self.switch_1.place(x=320, y=80, anchor='center')
+        self.switch_2.place(x=220, y=120, anchor='center')
         self.R1.place(x=422, y=80, anchor='center')
         self.R2.place(x=522, y=80, anchor='center')
         self.button_1.place(x=60, y=85, anchor='center')
@@ -97,7 +102,8 @@ class App(ctk.CTk):
         self.button_5.place(x=60, y=245, anchor='center')
         self.dateforCatalog1_.place(x=420, y=122, anchor='center')
 
-
+    def send_file(self):
+        self.sendFiletoServer(self.ban_dir)
     def update_cam_data(self, *args):
         self.baner_size_data = self.var.get()
 
@@ -107,11 +113,12 @@ class App(ctk.CTk):
     def switch_event_1(self):
         self.switch_data_1 = self.switch_var_1.get()
         return self.switch_data_1
+    def switch_event_2(self):
+        self.switch_data_2 = self.switch_var_2.get()
+        return self.switch_data_2
     def ban_dir_update(self):
         self.stringvar.set(self.ban_dir)
     def get_banner_dir(self):
-        # stringvar = tk.StringVar()
-
         self.ban_dir = fd.askdirectory()  # Get the directory from button_1
         self.ban_dir_update()
         if self.ban_dir is not None:
@@ -121,36 +128,102 @@ class App(ctk.CTk):
             self.resizeFlag = True
 
     def resize_banner(self):
-        if self.ban_dir is not None and self.baner_size_data is not None:  # Check if a directory is selected
+        if self.ban_dir is not None and self.baner_size_data is not None:
             dimensions = self.baner_size_data
             banner_check = list(os.listdir(f"{self.ban_dir}"))
             plik_jpg_istnieje = any(
                 plik.endswith(rozszerzenie) for plik in banner_check for rozszerzenie in ['.jpg', '.png', '.mp4'])
-            if plik_jpg_istnieje == True:
-                if os.path.exists(f"{self.ban_dir}\\Banner") == False:
-                    os.makedirs(f"{self.ban_dir}\\Banner")
+            # if plik_jpg_istnieje == True:
+            #     # if os.path.exists(f"{self.ban_dir}\\Banner") == False:
+            #     #     os.makedirs(f"{self.ban_dir}\\Banner")
+            #     # # Czyszczenie nazww
+            #     # self.cleaning_napespace()
+            #     # # Dodanie prefiksu _b lub _mb
+            #     is_b_bm_on = self.switch_event_0()
+            #     # # odpalenie PS
+            #     # photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
+            #     #                  int(dimensions), is_b_bm_on)
+            #     # photoShopAPi.psBannerResizer()
+            #     # # dodanie brakujacych plików
+            #     # self.copy_dach_fr(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),self.m_or_mb_(dimensions, is_b_bm_on))
+            #     # # komunikat o ilości przygotowanych banerów
+            #     # banner_check = list(os.listdir(f"{self.ban_dir}\\Banner"))
+            #     # comm = f' {str(len(banner_check))} banners have been prepared '
+            #     # print(f'{comm:=^80}')
+            #     # # jeśli webp On to stworzenie także w formacie .webp
+            #     # self.webPisON()
+            #     # # wysłanie na serwer
+            #     # self.sendFiletoServer(self.ban_dir)
+            #
+            # else:
+            #     print('There are no files to scale in this directory')
+            is_b_bm_on = self.switch_event_0()
+            is_sd_on = self.switch_event_2()
+            self.prepare_and_send(int(dimensions), is_b_bm_on, is_sd_on)
 
-                self.cleaning_napespace()
+    def prepare_and_send(self, dimensions,is_b_bm_on,  is_sd_on):
 
-                is_b_bm_on = self.switch_event_0()
-                photoShopAPi =aps.PhotoshopAPI(self.ban_dir, self.dateforCatalog_.get('0.0', 'end').strip(),
-                                 int(dimensions), is_b_bm_on)
-                photoShopAPi.psBannerResizer()
-                self.copy_dach_fr(self.dateforCatalog_.get('0.0', 'end').strip(),self.m_or_mb_(dimensions, is_b_bm_on))
-                banner_check = list(os.listdir(f"{self.ban_dir}\\Banner"))
-                comm = f' {str(len(banner_check))} banners have been prepared '
-                print(f'{comm:=^80}')
-                self.webPisON()
-                self.sendFiletoServer()
+        is_b_bm_on = self.switch_event_0()
+        for root, dir, files in os.walk(self.ban_dir):
+            if is_sd_on == 'on':
+                if os.path.basename(root) != 'Banner':
+                    file_name = os.path.basename(root)
             else:
-                print('There are no files to scale in this directory')
+                file_name = self.dateforCatalog_.get('0.0', 'end').strip()
 
-    def sendFiletoServer(self):
+            self.clean_name_space(root, files)
+            self.scaled_file(root, file_name, dimensions, is_b_bm_on, is_sd_on)
+            self.add_missed_file(root, files, dir, file_name, self.m_or_mb_(dimensions, is_b_bm_on))
+            self.finally_comment(root, files, dir)
+            self.convert_to_webp(root, is_sd_on)
+            self.Server_send_file(root, is_sd_on)
+
+# Start  nowych funkcji os.walk ===============================================
+    def clean_name_space(self, root, files):
+        plik_jpg_istnieje = any(
+            plik.endswith(rozszerzenie) for plik in files for rozszerzenie in ['.jpg', '.png', '.mp4'])
+        if plik_jpg_istnieje == True:
+            if os.path.exists(f"{root}\\Banner") == False:
+                os.makedirs(f"{root}\\Banner")
+            else:
+                name_cleaning.Clean_File_Name(f'{root}').clear_name()
+
+
+    def scaled_file(self, root, file_name, dimensions, is_b_bm_on, is_sd_on):
+        photoShopAPi = aps.PhotoshopAPI(root, file_name, dimensions, is_b_bm_on, is_sd_on)
+        photoShopAPi.psBannerResizer()
+
+    def add_missed_file(self, root, files, dir, file_name, dimensions):
+
+        if files != [] and dir == []:
+            self.copy_dach_fr(root.replace('\\Banner', ""), file_name, dimensions)
+
+    def finally_comment(self, root, files, dir):
+        if files != [] and dir == []:
+            banner_check = os.listdir(f'{root}\\Banner')
+            comm = f' {str(len(banner_check))} banners have been prepared '
+            print(f'{comm:=^80}')
+
+    def convert_to_webp(self, root, is_sd_on):
+        if is_sd_on == 'on' and os.path.exists(f'{root}\\Banner'):
+            self.webPisON(root)
+        elif is_sd_on == 'off':
+            self.webPisON(self.ban_dir)
+
+    def Server_send_file(self, root, is_sd_on):
+        if is_sd_on == 'on' and os.path.exists(f'{root}\\Banner'):
+            self.sendFiletoServer(f'{root}')
+        elif is_sd_on == 'off':
+            self.sendFiletoServer(self.ban_dir)
+
+# Koniec nowych funkcji os.walk ===============================================
+
+    def sendFiletoServer(self, ban_dir):
 
         if self.my_serv is not None:
             sendFile = self.my_serv.passToServerIfTrue()
             sC.ServerConnectionAction().connectioFtpOrSftp(sendFile['ftpORsftp'],
-                                                           f"{self.ban_dir}\\Banner",
+                                                           f"{ban_dir}\\Banner",
                                                            sendFile['hostname'],
                                                            sendFile['username'],
                                                            sendFile['password'],
@@ -159,7 +232,7 @@ class App(ctk.CTk):
         else:
             if '' not in sP.passToFTP.values():
                 try:
-                    sC.ServerConnectionAction().connectToServerFTP(f"{self.ban_dir}\\Banner")
+                    sC.ServerConnectionAction().connectToServerFTP(f"{ban_dir}\\Banner")
                 except FileNotFoundError as e:
                     print(e)
             else:
@@ -167,24 +240,22 @@ class App(ctk.CTk):
 
 
 
-    def webPisON(self):
+    def webPisON(self, ban_dir):
         webp = self.switch_event_1()
         if webp == 'on':
-            ptw.convertToWebp2(self.ban_dir)
+            ptw.convertToWebp2(ban_dir)
 
     def cleaning_napespace(self):
-        spr = name_cleaning.Clean_File_Name(self.ban_dir)
-        spr.clear_name()
-        #print('poprawa nazw zakończona')
+        name_check = name_cleaning.Clean_File_Name(self.ban_dir)
+        name_check.clear_name()
 
 
-    def copy_dach_fr(self, data, ext):
 
-        f_cop = file_copy.Copy_Missing_C(self.ban_dir)
+    def copy_dach_fr(self, bandir, data, ext):
+
+        f_cop = file_copy.Copy_Missing_C(bandir)
         f_cop.file_copy_dach_2(data, ext)
-        # print('duplikowanie dach zakończone')
         f_cop.file_copy_chf_2(data, ext)
-        # print('duplikowanie CHFR zakończone')
     def m_or_mb_(self, dimension, on_of):
         if on_of == 'on':
             if int(dimension) == 650:
