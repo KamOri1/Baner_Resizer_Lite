@@ -49,7 +49,7 @@ class App(ctk.CTk):
         self.dateforCatalog_ = ctk.CTkTextbox(master=self, corner_radius=5, border_color='green', border_width=1,
                                           width=200, height=10,fg_color='#1d1e1e', text_color='#ffffff')
         self.dateforCatalog1_ = ctk.CTkLabel(master=self, textvariable=self.stringvar, width=322,  height=25, text_color='#ffffff',
-                                             fg_color='#1d1e1e', wraplength=300, justify='left', corner_radius=5, padx=5,pady=5, font=('Open Sans', 10))
+                                             fg_color='#1d1e1e', wraplength=322, justify='left', corner_radius=5, padx=5,pady=5, font=('Open Sans', 10))
         self.switch_var_0 = tk.StringVar(value="on")
         self.switch_var_1 = tk.StringVar(value="off")
         self.switch_var_2 = tk.StringVar(value="off")
@@ -58,7 +58,7 @@ class App(ctk.CTk):
         self.switch_1= ctk.CTkSwitch(master=self, text=".webp", variable=self.switch_var_1,onvalue="on", offvalue="off",
                                      progress_color='green',fg_color='red', switch_height=13,font=('Open Sans', 14), text_color='#ffffff')
         self.switch_2 = ctk.CTkSwitch(master=self, text="Sun", variable=self.switch_var_2, onvalue="on",
-                                      offvalue="off",
+                                      offvalue="off", width=20,
                                       progress_color='green', fg_color='red', switch_height=13, font=('Open Sans', 14),
                                       text_color='#ffffff', command=self.resend_block)
         self.var = tk.IntVar()
@@ -92,7 +92,7 @@ class App(ctk.CTk):
         self.dateforCatalog_.place(x=470, y=40, anchor='center')
         self.switch_0.place(x=220, y=80, anchor='center')
         self.switch_1.place(x=320, y=80, anchor='center')
-        self.switch_2.place(x=220, y=120, anchor='center')
+        self.switch_2.place(x=205, y=120, anchor='center')
         self.R1.place(x=422, y=80, anchor='center')
         self.R2.place(x=522, y=80, anchor='center')
         self.button_1.place(x=60, y=85, anchor='center')
@@ -119,7 +119,7 @@ class App(ctk.CTk):
     def ban_dir_update(self):
         self.stringvar.set(self.ban_dir)
     def get_banner_dir(self):
-        self.ban_dir = fd.askdirectory()  # Get the directory from button_1
+        self.ban_dir = fd.askdirectory()
         self.ban_dir_update()
         if self.ban_dir is not None:
 
