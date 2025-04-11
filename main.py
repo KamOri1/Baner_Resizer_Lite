@@ -1,3 +1,5 @@
-from front import App
+from app_manager.app import ApplicationManager
 
-App()
+
+if __name__ == "__main__":
+    ApplicationManager()
