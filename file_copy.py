@@ -1,6 +1,7 @@
 import os
 import shutil
-
+f_path = 'C:\\Users\\User\\Desktop\\Praca\\2024\\testy\\2024.05.16 - Viennese Braid'
+#f_patch = 'C:\\Users\\User\\Desktop\\Praca\\2024\\testy'
 
 class Copy_Missing_C:
     def __init__(self, file_path):
@@ -50,7 +51,30 @@ class Copy_Missing_C:
 
         if os.path.exists(self.file_path + '\\CHF.png'):
             os.remove(self.file_path + '\\CHF.png')
+    def file_copy_bef(self, data, ext):
+        self.file_path_list = [country.lower() for country in self.file_path_list]
+        if f'fr{data}{ext}.png' in self.file_path_list and f'bef{data}{ext}.png' not in self.file_path_list:
+            shutil.copy(self.file_path + f'\\fr{data}{ext}.png', self.file_path + f'\\befr{data}{ext}.png')
+            print(f' - added missing befr{data}{ext}.png file')
 
+        elif f'bef{data}{ext}.png' in self.file_path_list:
+            shutil.copy(self.file_path + f'\\bef{data}{ext}.png', self.file_path + f'\\befr{data}{ext}.png')
+
+
+        if os.path.exists(self.file_path + f'\\bef{data}{ext}.png'):
+            os.remove(self.file_path + f'\\bef{data}{ext}.png')
+    def file_copy_ben(self, data, ext):
+        self.file_path_list = [country.lower() for country in self.file_path_list]
+        if f'nl{data}{ext}.png' in self.file_path_list and f'ben{data}{ext}.png' not in self.file_path_list:
+            shutil.copy(self.file_path + f'\\nl{data}{ext}.png', self.file_path + f'\\benl{data}{ext}.png')
+            print(f' - added missing benl{data}{ext}.png file')
+
+        elif f'ben{data}{ext}.png' in self.file_path_list:
+            shutil.copy(self.file_path + f'\\ben{data}{ext}.png', self.file_path + f'\\benl{data}{ext}.png')
+
+
+        if os.path.exists(self.file_path + f'\\ben{data}{ext}.png'):
+            os.remove(self.file_path + f'\\ben{data}{ext}.png')
 
     def file_copy_chf_2(self, data, ext):
         self.file_path_list = [country.lower() for country in self.file_path_list]
