@@ -1,7 +1,6 @@
 import os
 import shutil
-f_path = 'C:\\Users\\User\\Desktop\\Praca\\2024\\testy\\2024.05.16 - Viennese Braid'
-#f_patch = 'C:\\Users\\User\\Desktop\\Praca\\2024\\testy'
+
 
 class Copy_Missing_C:
     def __init__(self, file_path):
@@ -97,5 +96,3 @@ class Copy_Missing_C:
             if os.path.exists(self.file_path + f'\\ch{data}{ext}.png'):
                 os.remove(self.file_path + f'\\ch{data}{ext}.png')
 
-# pp = 'C:\\Users\\User\\Desktop\\Praca\\2024\\testy\\2024.05.16 - Viennese Braid'
-# ss = Copy_Missing_C(pp).file_copy_dach_2('0101', '_mb')

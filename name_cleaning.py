@@ -5,7 +5,6 @@ class Clean_File_Name:
         self.file_path = file_path
         self.file_path_list = os.listdir(self.file_path)
 
-
     def clear_name(self):
 
         file_endswith = ['.jpg', '.png', '.mp4']
