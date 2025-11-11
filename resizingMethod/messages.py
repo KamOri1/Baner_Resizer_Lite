@@ -1,0 +1,8 @@
+FILE_NOT_FOUND_ERROR: str = "Błąd: Plik {} nie został znaleziony."
+GENERIC_ERROR: str = "Wystąpił błąd: {}"
+BANNER_UPLOADED: str = "Banner uploaded: {}"
+BANNER_SCALED_SUCCESS: str = " - Banner: {}{} has been scaled"
+FILE_PROBLEM: str = "There was a problem with the file {} \n {}"
+SCALING_SUMMARY_SUCCESS: str = " {}/{} banner has been scaled "
+NO_BANNERS_SCALED: str = "No banners were scaled."
+PHOTOSHOP_ACTION: str = "Check if Adobe Photoshop does not perform an action \n {}"

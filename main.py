@@ -1,3 +1,5 @@
-from front import App
+from ui.ui_managers.application_view import Application
 
-App()
+
+if __name__ == "__main__":
+    Application()
