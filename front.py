@@ -98,6 +98,23 @@ class App(ctk.CTk):
         self.dateforCatalog1_.place(x=420, y=122, anchor='center')
 
 
+    def create_layout(self):
+        self.label1.place(x=255, y=40, anchor='center')
+        self.dateforCatalog_.place(x=470, y=40, anchor='center')
+        self.switch_0.place(x=220, y=80, anchor='center')
+        self.switch_1.place(x=320, y=80, anchor='center')
+        self.switch_2.place(x=205, y=120, anchor='center')
+        self.R1.place(x=422, y=80, anchor='center')
+        self.R2.place(x=522, y=80, anchor='center')
+        self.button_1.place(x=60, y=85, anchor='center')
+        self.button_2.place(x=60, y=125, anchor='center')
+        self.button_3.place(x=60, y=165, anchor='center')
+        self.button_4.place(x=60, y=205, anchor='center')
+        self.button_5.place(x=60, y=245, anchor='center')
+        self.dateforCatalog1_.place(x=420, y=122, anchor='center')
+
+    def send_file(self):
+        self.sendFiletoServer(self.ban_dir)
     def update_cam_data(self, *args):
         self.baner_size_data = self.var.get()
 
@@ -120,6 +137,14 @@ class App(ctk.CTk):
             self.button_3.configure(state="normal")
             self.resizeFlag = True
 
+            self.button_2.configure(state="normal")
+            self.button_3.configure(state="normal")
+            self.resizeFlag = True
+    def resend_block(self):
+        if self.switch_var_2.get() == 'on':
+            self.button_3.configure(state='disabled')
+        else:
+            self.button_3.configure(state='normal')
     def resize_banner(self):
         if self.ban_dir is not None and self.baner_size_data is not None:  # Check if a directory is selected
             dimensions = self.baner_size_data
